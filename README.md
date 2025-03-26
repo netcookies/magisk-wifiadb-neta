@@ -81,7 +81,7 @@ If logging is enabled, logs can be viewed at `/data/local/tmp/wifiadb.log`.
 WiFi ADB is enabled by setting properties in Android:
 ```shell
 su
-setprop service.adb.tcp.port $adb_port_number
+setprop service.adb.tls.port 1
 stop adbd
 start adbd
 ```
