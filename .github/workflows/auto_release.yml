@@ -21,11 +21,11 @@ jobs:
           FULL_TAG="alpha-$VERSION-$GITHUB_SHORT_SHA"
             
           echo "::set-output name=tag::$FULL_TAG"
-          zip -r magisk-wifiadb.zip ./*
+          zip -r magisk-wifiadb-neta.zip ./*
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "magisk-wifiadb.zip"
+          artifacts: "magisk-wifiadb-neta.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.process.outputs.tag }}
           prerelease: true
