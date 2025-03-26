@@ -16,16 +16,13 @@ jobs:
         id: process
         run: |
           VERSION=`cat module.prop | grep -oP "(?<=version=).*" | cut -d "=" -f2`
-          GITHUB_SHA=${{github.sha}}
-          GITHUB_SHORT_SHA=${GITHUB_SHA:0:7}
-          FULL_TAG="alpha-$VERSION-$GITHUB_SHORT_SHA"
-            
-          echo "::set-output name=tag::$FULL_TAG"
+          FULL_TAG="$VERSION"
+          echo "tag=$FULL_TAG" >> $GITHUB_OUTPUT
           zip -r magisk-wifiadb-neta.zip ./*
 
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "magisk-wifiadb-neta.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.process.outputs.tag }}
+          tag: ${{ GITHUB_OUTPUT.tag }}
           prerelease: true
