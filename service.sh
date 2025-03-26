@@ -29,13 +29,13 @@ print_log() {
 }
 
 start_adb() {
-    setprop service.adb.tcp.port "$ADB_PORT"
+    setprop persist.adb.tls_server.enable 1
     stop adbd
     start adbd
 }
 
 stop_adb() {
-    setprop service.adb.tcp.port ""
+    setprop persist.adb.tls_server.enable 0
     stop adbd
     start adbd
 }
@@ -45,9 +45,9 @@ check_adb_status() {
         return 0
     fi
 
-    if [ "$(getprop service.adb.tcp.port)" != "$ADB_PORT" ]; then
-        return 0
-    fi
+    #if [ "$(getprop service.adb.tls.port)" != "$ADB_PORT" ]; then
+    #    return 0
+    #fi
 
     return 1
 }
@@ -88,6 +88,7 @@ parse_config() {
     if ! echo "$ADB_PORT" | grep -Eq "$ADB_PORT_PATTERN"; then
         print_log "ADB_PORT parse failed, set to default value"
         ADB_PORT=$DEFAULT_ADB_PORT
+        ADB_PORT=$(getprop service.adb.tls.port)
     fi
     print_log "ADB_PORT value: $ADB_PORT"
 
