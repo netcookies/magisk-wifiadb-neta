@@ -32,6 +32,7 @@ start_adb() {
     setprop persist.adb.tls_server.enable 1
     stop adbd
     start adbd
+    ADB_PORT=$(getprop service.adb.tls.port)
 }
 
 stop_adb() {
@@ -67,6 +68,7 @@ maintain_adb_availability() {
             if [ $? -eq 0 ]; then
                 print_log "Module is enabled, starting ADB..."
                 start_adb
+                print_log "ADB_PORT value: $ADB_PORT"
             fi
         fi
 
@@ -87,7 +89,7 @@ load_config() {
 parse_config() {
     if ! echo "$ADB_PORT" | grep -Eq "$ADB_PORT_PATTERN"; then
         print_log "ADB_PORT parse failed, set to default value"
-        ADB_PORT=$DEFAULT_ADB_PORT
+        # ADB_PORT=$DEFAULT_ADB_PORT
         ADB_PORT=$(getprop service.adb.tls.port)
     fi
     print_log "ADB_PORT value: $ADB_PORT"
